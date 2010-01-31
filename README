@@ -1,0 +1,123 @@
+rsLucenePlugin
+========
+
+*adds Zend-Search-Lucene capabilities to Propel Models by adding a behavior*
+
+Its completly configurable through a yaml file
+
+Its mostly inspired by the "old" sfLucenePlugin which wont worked for my newer symfony projects.
+and the lucene integration mentioned in the jobeet tutorials
+The sfLucenePlugin is very configurable and handy, the jobeet integration is clean and working,
+if tried to combine both advantages.
+
+*Its still alpha or beta, but its working perfectly for me.*
+
+*Its working with symfony 1.4 and PHP5.3*
+
+
+Installation
+------------
+
+for SVN externals try this:
+
+    http://svn.symfony-project.com/plugins/rsLucenePlugin/trunk
+
+for Pear Packages try this:
+
+    ./symfony plugin:install rsLucenePlugin -s alpha
+
+
+Configuration
+-------------
+
+add the Zend Framework to your symfony project, since we wont load Zend all the time,
+implement this function in your ProjectConfiguration (it should return the path to the Zend Autoloader):
+
+    public function getZendPath(){
+      return 'PATH/TO/Zend/Loader/Autoloader.php';
+    }
+
+add the behavior to your propel.ini by adding these line:
+
+    propel.behavior.searchable.class = plugins.rsLucenePlugin.lib.behavior.rsBehaviorSearchable
+
+add the behavior to your models:
+
+    propel:
+      MODEL:
+        _propel_behaviors:
+           # every model gets indexed
+           searchable: ~
+      ANOTHER_MODEL:
+        _propel_behaviors:
+          searchable:
+            #only models which ACCESSOR_METHOD returns true gets indexed
+            check_active: ACCESSOR_METHOD
+
+now configure your search configuration:
+
+    index:
+      meta:
+        name: THE_INDEX_NAME
+      models:
+        MODEL:
+          fields:
+            pk: id
+            AN_ATTRIBUTE:
+              boost: 1.5
+              method: ACCESSOR_METHOD
+            ANOTHER_ATTRIBUTE: ~
+            route: ~
+            category: THE_CATEGORY
+        ANOTHER_MODEL:
+          fields:
+            pk: id
+            AN_ATTRIBUTE:
+              boost: 1.5
+              method: ACCESSOR_METHOD
+            ANOTHER_ATTRIBUTE: ~
+            route: ~
+            category: THE_CATEGORY
+
+**the route attribute is mandatory, your model should define a function which returns the url for it!**
+
+Thats all, now let rebuild your model:
+
+    ./symfony propel:build-all
+
+Now everytime a model is saved the appropiate lucene documents is updated.
+
+Tasks
+-----
+    ./symfony lucene:generate  # generates the index
+    ./symfony lucene:optimize  # optimized the index
+    ./symfony lucene:info      # shows information about the index
+    ./symfony lucene:dump      # deletes the index
+
+
+Frontend
+--------
+For plug'n'play search add the plugin module to your application settings.yml:
+
+    all:
+      .settings:
+        enabled_modules:        [ ..., rsLucene]
+
+Add the route:
+
+    search:
+      url: /search
+      param: { module: rsLucene, action: search }
+
+
+Tests
+-----
+* none till now
+
+Todo
+----
+
+* move route registering to plugin configuration
+* implement multi indexes
+* implement unit tests
+* implement much more lucene features

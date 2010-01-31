@@ -1,0 +1,12 @@
+#propel:
+#  MODEL:
+#    _propel_behaviors:
+#      # every model gets indexed
+#      searchable: ~
+#
+#  ANOTHER_MODEL:
+#    _propel_behaviors:
+#      searchable:
+#        #only models which ACCESSOR_METHOD returns true gets indexed
+#        check_active: ACCESSOR_METHOD
+#

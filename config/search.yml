@@ -1,0 +1,14 @@
+#index:
+#  meta:
+#    name: THE_INDEX_NAME
+#
+#  models:
+#    A_MODEL_NAME:
+#      fields:
+#        pk: id
+#        AN_ATTRIBUTE:
+#          boost: 1.5
+#          method: ACCESSOR_METHOD
+#        ANOTHER_ATTRIBUTE: ~
+#        route: ~
+#        category: THE_CATEGORY

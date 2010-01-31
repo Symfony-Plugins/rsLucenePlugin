@@ -88,10 +88,10 @@ class rsLucene {
 	}
 
 	private static function registerZend() {
-		if(!class_exists('Zend_Loader_Autoloader')){
+		if(!class_exists('Zend_Loader_Autoloader')) {
 			require_once ProjectConfiguration::getActive()->getZendPath();
 		}
-		
+
 		Zend_Loader_Autoloader::getInstance();
 		self::$zendLoaded = true;
 	}

@@ -10,7 +10,7 @@
 			</select>
 		<?php endif;?>
 
-		<input type="text" name="query" value="<?php echo $sf_request->getParameter('query')?>"/>
+		<input type="text" name="query" value="<?php echo htmlentities($sf_request->getParameter('query'))?>"/>
 		<input type="submit" name="submit" value="Search"/>
 	</form>
 </div>
